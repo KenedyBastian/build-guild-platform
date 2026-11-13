@@ -1,0 +1,39 @@
+name: Publish network updates
+on:
+  workflow_dispatch:
+    inputs:
+      approval_digest:
+        description: Digest from CI or python -m scripts.automation check for reviewed draft and registry
+        required: true
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: platform-mutations
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: platform-automation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Create organization App token (optional)
+        id: app
+        if: vars.TARGET_APP_ID != ''
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.TARGET_APP_ID }}
+          private-key: ${{ secrets.TARGET_APP_PRIVATE_KEY }}
+          owner: ${{ vars.TARGET_APP_OWNER }}
+      - run: python -m scripts.automation broadcast
+        env:
+          CONTROL_TOKEN: ${{ github.token }}
+          TARGET_TOKEN: ${{ steps.app.outputs.token || secrets.PLATFORM_TARGET_TOKEN }}
+          APPROVAL_DIGEST: ${{ inputs.approval_digest }}

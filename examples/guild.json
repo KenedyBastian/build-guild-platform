@@ -1,0 +1,13 @@
+{
+  "name": "Example Build Guild",
+  "state": "OH",
+  "description": "A community of builders learning, sharing and shipping together.",
+  "owner": "KenedyBastian",
+  "slug": "example-build-guild",
+  "support": [
+    {"name": "GitHub support team", "role": "Developer tooling and community support", "url": "https://github.com"}
+  ],
+  "meeting": "Public meeting details will be announced here.",
+  "meeting_url": "",
+  "accent": "#8b72ff"
+}

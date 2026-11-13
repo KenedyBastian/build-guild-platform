@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "items": [
+    {
+      "id": "welcome",
+      "kind": "news",
+      "title": "Welcome, builders",
+      "body": "Bring a question, share a lesson, and build something together.",
+      "date": "2026-11-13",
+      "url": ""
+    }
+  ]
+}

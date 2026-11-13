@@ -1,0 +1,78 @@
+name: Request a Build Guild site
+description: Request an independent repository and GitHub Pages site (maintainer approval required).
+title: "[Guild request] "
+labels: ["guild-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        All answers and the generated website are PUBLIC. Do not include private meeting links,
+        credentials, or personal contact details without consent. Requesting a site does not grant
+        repository access. Use an owner pre-approved by the platform operator.
+  - type: input
+    id: name
+    attributes:
+      label: Guild name
+      description: Enter the place or community name; Iowa becomes Iowa Build Guild. An existing Build Guild suffix is not repeated.
+      placeholder: Iowa
+    validations:
+      required: true
+  - type: input
+    id: state
+    attributes:
+      label: State
+      description: Two-letter US state or territory abbreviation, uppercase.
+      placeholder: OH
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Plain text about the guild and who it serves.
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: Repository owner
+      placeholder: KenedyBastian
+    validations:
+      required: true
+  - type: input
+    id: slug
+    attributes:
+      label: Repository slug
+      description: Optional override. Defaults to a safe slug from the guild name, such as iowa-build-guild.
+      placeholder: iowa-build-guild
+  - type: textarea
+    id: support
+    attributes:
+      label: Public support
+      description: JSON array of 1-12 teams or consenting public contacts, with name, role and optional HTTPS url.
+      render: json
+      value: |
+        [
+          {"name": "GitHub team", "role": "Developer tooling support", "url": "https://github.com"},
+          {"name": "Microsoft team", "role": "Cloud and community support", "url": "https://learn.microsoft.com"}
+        ]
+    validations:
+      required: true
+  - type: textarea
+    id: meeting
+    attributes:
+      label: Public meeting details
+      description: Optional public schedule/description. Never paste private meeting access codes.
+  - type: input
+    id: meeting_url
+    attributes:
+      label: Public registration URL
+      description: Optional HTTPS public registration or information page.
+  - type: input
+    id: accent
+    attributes:
+      label: Brand accent
+      description: Decorative accent color in hexadecimal. Text contrast stays independent of this color.
+      value: "#8b72ff"
+    validations:
+      required: true

@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "provisioning_enabled": false,
+  "owners": {
+    "KenedyBastian": {"type": "User", "auth": "user"}
+  }
+}

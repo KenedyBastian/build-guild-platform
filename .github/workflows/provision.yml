@@ -1,0 +1,45 @@
+name: Provision guild
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Open guild request issue to approve
+        required: true
+        type: string
+      approval_digest:
+        description: SHA256 digest from the latest validation comment (review all answers first)
+        required: true
+        type: string
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: platform-mutations
+  cancel-in-progress: false
+jobs:
+  provision:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: platform-automation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Create organization App token (optional)
+        id: app
+        if: vars.TARGET_APP_ID != ''
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.TARGET_APP_ID }}
+          private-key: ${{ secrets.TARGET_APP_PRIVATE_KEY }}
+          owner: ${{ vars.TARGET_APP_OWNER }}
+      - run: python -m scripts.automation provision
+        env:
+          CONTROL_TOKEN: ${{ github.token }}
+          TARGET_TOKEN: ${{ steps.app.outputs.token || secrets.PLATFORM_TARGET_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          APPROVAL_DIGEST: ${{ inputs.approval_digest }}
